@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Launch",
             "type": "go",
@@ -9,8 +10,10 @@
             "remotePath": "",
             "port": 2345,
             "host": "127.0.0.1",
-            "program": "${workspaceRoot}\\main.exe",
-            "env": {},
+            "program": "${fileDirname}",
+            "env": {
+                "GOPATH":"E:\\git_pro\\go"
+            },
             "args": []
         }
     ]
