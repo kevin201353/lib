@@ -1,9 +1,9 @@
 package math2
 
 import (
-	"fmt"
+	//"fmt"
 	"log"
-	 "encoding/xml"
+	 //"encoding/xml"
 	 "io/ioutil"
 )
 
@@ -24,6 +24,7 @@ func ParseMsgInfoXml() []byte {
 	if err != nil {
 		log.Fatal(err)
 	}
+	/*
 	fmt.Printf("msg xml data: %s\n", context)
 	v := MsgInfo{MsgType: 6, MsgSubType:0}
 	err0 := xml.Unmarshal(context, &v)
@@ -36,5 +37,6 @@ func ParseMsgInfoXml() []byte {
 		log.Fatal(err)
 	}
 	fmt.Printf("MsgType: %s\n", bytes)
-	return bytes
+	*/
+	return context
 }

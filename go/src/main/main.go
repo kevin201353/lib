@@ -34,21 +34,30 @@ func HandleInput(){
 	}
 }
 
+func handleRead(conn net.Conn) {
+	for {
+		data := make([]byte, 1024)
+		n, err := conn.Read(data)
+		if n == 0 || err != nil {
+			fmt.Printf("rev client data == 0, error: %s.\n", err.Error())
+			conn.Close()
+			bChan <- true
+			break
+		}
+		fmt.Printf("Read len: %d,  data: %s\n", n, data)
+	}
+}
+
 func handleConnection(conn net.Conn)  {
-	defer conn.Close()
 	for {
 		<- bChan
 		bytes := math2.ParseMsgInfoXml()
 		fmt.Printf("xml return data: %s\n", bytes)
-		/*
-		data := make([]byte, 1024)
-		n, err := conn.Read(data)
-		if n == 0 || err != nil {
+		n, err := conn.Write(bytes)
+		if n == 0 && err != nil {
+			conn.Close()
 			break
 		}
-		fmt.Printf("Read len: %d,  data: %s\n", n, data)
-		*/
-		conn.Write(bytes)
 	}
 }
 
@@ -61,14 +70,15 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+	defer ln.Close()
 	go HandleInput()
 	for {
 		conn, err := ln.Accept()
 		if err != nil {
 			panic(err)
 		}
+		defer conn.Close()
+		go handleRead(conn)
 		go handleConnection(conn)
 	}
-
 }
