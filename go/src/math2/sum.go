@@ -1,19 +1,19 @@
 package math2
 
 import (
-	//"fmt"
+	"fmt"
 	"log"
-	 //"encoding/xml"
+	 "encoding/xml"
 	 "io/ioutil"
+	 "encoding/json"
 )
 
 type MsgInfo struct{
-	MsgType  int    `xml:"Type"`
-	MsgSubType  int  `xml:"Subtype"`
-	Buf []byte  `xml:"Data"`
-	Buflen  int
-	Arg interface{}
+	Type  int    `xml:"Type"`
+	SubType  int  `xml:"Subtype"`
+	Data string  `xml:"Data"`
 }
+
 
 func Sum(a int, b int) int {
 	return a+b
@@ -24,19 +24,20 @@ func ParseMsgInfoXml() []byte {
 	if err != nil {
 		log.Fatal(err)
 	}
-	/*
+	
 	fmt.Printf("msg xml data: %s\n", context)
-	v := MsgInfo{MsgType: 6, MsgSubType:0}
+	v := MsgInfo{Type: 6, SubType:0}
 	err0 := xml.Unmarshal(context, &v)
 	if err0 != nil {
 		log.Fatal(err0)
 	}
-	fmt.Printf("MsgType: %d, SubType: %d, Buf: %s\n", v.MsgType, v.MsgSubType, v.Buf)
-	bytes, err := xml.Marshal(v)
+	fmt.Printf("MsgType: %d, SubType: %d, Buf: %s\n", v.Type, v.SubType, v.Data)
+	
+	bytes, err := json.Marshal(v)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("MsgType: %s\n", bytes)
-	*/
-	return context
+	fmt.Printf("MsgType: %s\n", bytes) 
+
+	return bytes
 }

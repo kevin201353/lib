@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Base>
-	<AirPortInfo>
-		<AirPort>CGO</AirPort>
-	</AirPortInfo>
-</Base>
+<MsgInfo>
+	<Type>3</Type>
+	<Subtype>0</Subtype>
+	<Data>#BridgeID=1000001A#DeviceType=01#DeviceID=#EventID=0009000110100539#Level=3#BitType=1#BridgeUpdate=0#Desc=171 转台左转跳闸限位#OccurTime=2018-08-09 16:53:59#</Data>
+</MsgInfo>
