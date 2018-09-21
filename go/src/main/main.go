@@ -1,26 +1,30 @@
 package main
 
 import (
-	//"log"
-	"math2"
-	"fmt"
-	"net"
 	"bufio"
+	"database/sql"
+	"fmt"
+	"log"
+	"math2"
+	"net"
 	"os"
-)
-//处理用户控制台输入
-var (
-	input string
-	bChan chan bool
-	inputReader *bufio.Reader
-	err  error
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
-func HandleInput(){
+//处理用户控制台输入
+var (
+	input       string
+	bChan       chan bool
+	inputReader *bufio.Reader
+	err         error
+)
+
+func HandleInput() {
 	/*
-	tcpAddr, err := net.ResolveTCPAddr("tcp4", ":8081")
-	conn, err := net.DialTCP("tcp", nil, tcpAddr)
-	defer conn.Close()
+		tcpAddr, err := net.ResolveTCPAddr("tcp4", ":8081")
+		conn, err := net.DialTCP("tcp", nil, tcpAddr)
+		defer conn.Close()
 	*/
 	inputReader = bufio.NewReader(os.Stdin)
 	for {
@@ -48,9 +52,9 @@ func handleRead(conn net.Conn) {
 	}
 }
 
-func handleConnection(conn net.Conn)  {
+func handleConnection(conn net.Conn) {
 	for {
-		<- bChan
+		<-bChan
 		bytes := math2.ParseMsgInfoXml()
 		fmt.Printf("xml return data: %s\n", bytes)
 		n, err := conn.Write(bytes)
@@ -61,12 +65,26 @@ func handleConnection(conn net.Conn)  {
 	}
 }
 
-
 func main() {
-	b := math2.Sum(2,3)
+	db, err := sql.Open("sqlite3", "./my.db")
+	if err != nil {
+		log.Fatal("sql open: ", err)
+	}
+	//创建表
+	sql_table := `
+    CREATE TABLE IF NOT EXISTS userinfo(
+        uid INTEGER PRIMARY KEY AUTOINCREMENT,
+        user VARCHAR(64) NULL,
+        sessionid VARCHAR(64) NULL,
+		logtype  VARCHAR(64) NULL,
+        created DATE NULL
+    );
+    `
+	db.Exec(sql_table)
+	b := math2.Sum(2, 3)
 	fmt.Println("Hello,world!, b:", b)
 	bChan = make(chan bool)
-	ln, err := net.Listen("tcp",  "localhost:8081")
+	ln, err := net.Listen("tcp", "localhost:8081")
 	if err != nil {
 		panic(err)
 	}
