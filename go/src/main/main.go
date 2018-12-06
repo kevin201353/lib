@@ -2,14 +2,10 @@ package main
 
 import (
 	"bufio"
-	"database/sql"
 	"fmt"
-	"log"
 	"math2"
 	"net"
 	"os"
-
-	_ "github.com/mattn/go-sqlite3"
 )
 
 //处理用户控制台输入
@@ -66,23 +62,6 @@ func handleConnection(conn net.Conn) {
 }
 
 func main() {
-	db, err := sql.Open("sqlite3", "./my.db")
-	if err != nil {
-		log.Fatal("sql open: ", err)
-	}
-	//创建表
-	sql_table := `
-    CREATE TABLE IF NOT EXISTS userinfo(
-        uid INTEGER PRIMARY KEY AUTOINCREMENT,
-        user VARCHAR(64) NULL,
-        sessionid VARCHAR(64) NULL,
-		logtype  VARCHAR(64) NULL,
-        created DATE NULL
-    );
-    `
-	db.Exec(sql_table)
-	b := math2.Sum(2, 3)
-	fmt.Println("Hello,world!, b:", b)
 	bChan = make(chan bool)
 	ln, err := net.Listen("tcp", "localhost:8081")
 	if err != nil {
